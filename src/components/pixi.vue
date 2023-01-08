@@ -1,4 +1,5 @@
 <template>
+  <div class="text-body-2 font-weight-light mb-n1">Count {{ store.count }}</div>
   <div class="connections" @contextmenu="onContextMenu($event)">
     <canvas id="pixi"></canvas>
   </div>
@@ -201,6 +202,10 @@ import { onMounted, reactive } from 'vue'
 
 import { MenuOptions } from '@imengyu/vue3-context-menu//src/ContextMenuDefine';
 import ContextMenu from '@imengyu/vue3-context-menu'
+import { useCounterStore } from "../store/counter";
+
+const store = useCounterStore();
+
 
 onMounted(() => {
   //highlight demo code
@@ -213,8 +218,8 @@ onMounted(() => {
 const menuData = reactive<MenuOptions>({
   items: [
     { 
-      label: 'Simple item',
-      onClick: () => alert('Click Simple item'),
+      label: 'Click increase',
+        onClick: () => { alert('Click increase store'); store.increment(); },
     },
     {
       label: "Sub menu Example",
@@ -363,56 +368,37 @@ const menuData = reactive<MenuOptions>({
 function onContextMenu(e : MouseEvent) {
   //prevent the browser's default menu
   e.preventDefault();
-  menuData.x = e.x;
-  menuData.y = e.y;
-  //show our menu
-  ContextMenu.showContextMenu(menuData);
-}
-function onContextMenu1(e : MouseEvent) {
-  return;
-  //prevent the browser's default menu
-  e.preventDefault();
-  //show our menu
-  ContextMenu.showContextMenu({
-    items: [
-      { 
-        label: 'This is menu in parent box',
-      },
-      { 
-        label: 'Simple item',
-      },
-    ],
-    iconFontClass: 'iconfont',
-    customClass: "class-a",
-    zIndex: 3,
-    minWidth: 230,
-    x: e.x,
-    y: e.y
-  } as MenuOptions);
-}
-function onContextMenu2(e : MouseEvent) {
-  return;
-  //prevent the browser's default menu
-  e.preventDefault();
-  e.stopPropagation();
-  //show our menu
-  ContextMenu.showContextMenu({
-    items: [
-      { 
-        label: 'This is menu in child box',
-      },
-      { 
-        label: 'Simple item',
-      },
-    ],
-    iconFontClass: 'iconfont',
-    customClass: "class-a",
-    zIndex: 3,
-    minWidth: 230,
-    x: e.x,
-    y: e.y
-  } as MenuOptions);
-}
 
+  if (store.count == 0) {
+    menuData.x = e.x;
+    menuData.y = e.y;
+    //show our menu
+    ContextMenu.showContextMenu(menuData);
+  }
+  else {
+    //menuData2.x = e.x;
+    //menuData2.y = e.y;
+    const menuData2 = {
+        items: [
+          { 
+            label: 'This is menu in child box',
+          },
+          { 
+            label: 'Simple item',
+          },
+        ],
+        iconFontClass: 'iconfont',
+        customClass: "class-a",
+        zIndex: 3,
+        minWidth: 230,
+        x: e.x,
+        y: e.y
+      } as MenuOptions;
+    ContextMenu.showContextMenu(menuData2);
+
+  }
+
+
+}
 
 </script>
