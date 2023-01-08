@@ -17,10 +17,16 @@
 import * as PIXI from "pixi.js";
 
 var app;
+var dialog;
 var stars = [];
 var t = 0;
 export default {
   name: "pixi",
+  data () {
+    return {
+      dialog: false,
+    }
+  },
   ready: function() {},
   methods: {
     stop() {
@@ -183,6 +189,7 @@ export default {
   },
 
 };
+
 </script>
 
 <style lang="scss">
